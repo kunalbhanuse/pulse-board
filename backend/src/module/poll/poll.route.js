@@ -5,5 +5,7 @@ const pollRouter = Router();
 
 pollRouter.post("/create-poll", authMiddleware, pollController.createPoll);
 pollRouter.get("/dashboard", authMiddleware, pollController.dashboard);
+pollRouter.get("/shareId/:shareId", pollController.getPollByShareId);
+pollRouter.post("/shareId/:shareId/vote", pollController.submitVote);
 
 export default pollRouter;

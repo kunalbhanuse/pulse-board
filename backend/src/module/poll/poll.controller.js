@@ -5,6 +5,7 @@ import Poll from "./poll.model.js";
 import User from "../auth/auth.model.js";
 import Question from "./question.model.js";
 import { pollSchema } from "./dto/poll.dto.js";
+import Vote from "./vote.model.js";
 
 export const createPoll = async (req, res) => {
   try {
@@ -63,6 +64,84 @@ export const dashboard = async (req, res) => {
       throw ApiError.badRequest("Poll not found");
     }
     return ApiResponce.ok(res, "Dashboard featch succefully ", poll);
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+export const getPollByShareId = async (req, res) => {
+  try {
+    const { shareId } = req.params;
+    if (!shareId) {
+      throw ApiError.badRequest("Give a valid shared Id");
+    }
+
+    const poll = await Poll.findOne({ shareId });
+    if (!poll) {
+      throw ApiError.notFound("Poll not found");
+    }
+    const questions = await Question.find({ pollId: poll._id });
+    if (questions.length === 0) {
+      throw ApiError.notFound("question not found !");
+    }
+
+    return ApiResponce.ok(res, "Poll feached succefully", { poll, questions });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+export const submitVote = async (req, res) => {
+  try {
+    const { shareId } = req.params;
+    if (!shareId) {
+      throw ApiError.badRequest("Provide shared id ");
+    }
+    const poll = await Poll.findOne({ shareId });
+    if (!poll) {
+      throw ApiError.notFound("Poll not found");
+    }
+    //  if(poll.requiresAuth){
+    //   if(!req.user){
+    //     throw ApiError.unauthorized("u are not authorized to vote ")
+    //   }
+    //  }
+    const { answers } = req.body;
+    if (!answers || answers.length === 0) {
+      throw ApiError.badRequest("Question and answers are missing ");
+    }
+    for (let answer of answers) {
+      const { questionId, optionId } = answer;
+      console.log("questionId:-", questionId);
+      console.log("optionId:-", optionId);
+
+      const question = await Question.findById(questionId);
+      if (!question) {
+        throw ApiError.badRequest("Provide the valid question ");
+      }
+      // console.log("question :- ", question);
+      const isValidOption = question.options.some(
+        (op) => op._id.toString() === optionId,
+      );
+      // console.log("isValidOption :- ", isValidOption);
+      if (!isValidOption) {
+        throw ApiError.badRequest("Provide the valid options");
+      }
+      const vote = await Vote.create({
+        pollId: poll._id,
+        questionId,
+        optionId,
+      });
+      console.log("Vote", vote);
+    }
+
+    return ApiResponce.ok(res, "All question and aswer are right ", vote);
   } catch (error) {
     return res.status(error.statusCode || 500).json({
       success: false,
