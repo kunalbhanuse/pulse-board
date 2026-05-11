@@ -112,12 +112,39 @@ export const login = async (req, res) => {
 export const me = async (req, res) => {
   try {
     const user = req.user;
-    const exitingUser = await User.findById(user.id);
+    const exitingUser = await User.findById(user._id);
     if (!exitingUser) {
-      return ApiError.unauthorized("Unauthorized");
+      throw ApiError.unauthorized("Unauthorized");
     }
 
     return ApiResponse.ok(res, "User feached succefully ", exitingUser);
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message || "Internal server eror ",
+    });
+  }
+};
+
+export const logout = async (req, res) => {
+  try {
+    const user = req.user;
+    if (!user) {
+      throw ApiError.unauthorized("User should be a valid user to logout ");
+    }
+    const existingUser = await User.findById(user.id);
+    if (!existingUser) {
+      throw ApiError.badRequest("User not found");
+    }
+    existingUser.refreshToken = null;
+    await existingUser.save();
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      sameSite: "strict",
+    });
+
+    return ApiResponse.ok(res, "Logout Succefull", null);
   } catch (error) {
     return res.status(error.statusCode || 500).json({
       success: false,

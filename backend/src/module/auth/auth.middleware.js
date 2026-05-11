@@ -17,6 +17,7 @@ export const authMiddleware = async (req, res, next) => {
     }
 
     const decoded = verifyAccessToken(token);
+    // console.log(decoded);
 
     const user = await User.findById(decoded.id).select("-password");
 
