@@ -4,5 +4,6 @@ import { authMiddleware } from "../auth/auth.middleware.js";
 const pollRouter = Router();
 
 pollRouter.post("/create-poll", authMiddleware, pollController.createPoll);
+pollRouter.get("/dashboard", authMiddleware, pollController.dashboard);
 
 export default pollRouter;

@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 import ApiError from "../../common/utility/ApiError.js";
 import ApiResponce from "../../common/utility/ApiResponce.js";
 import Poll from "./poll.model.js";
+import User from "../auth/auth.model.js";
 import Question from "./question.model.js";
 import { pollSchema } from "./dto/poll.dto.js";
 
@@ -39,6 +40,29 @@ export const createPoll = async (req, res) => {
       poll,
       questions: createQuestion,
     });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+export const dashboard = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+
+    if (!userId) {
+      throw ApiError.unauthorized("unauthorized");
+    }
+
+    const poll = await Poll.find({ createdBy: userId })
+      .sort({ createdAt: -1 })
+      .populate("createdBy");
+    if (!poll) {
+      throw ApiError.badRequest("Poll not found");
+    }
+    return ApiResponce.ok(res, "Dashboard featch succefully ", poll);
   } catch (error) {
     return res.status(error.statusCode || 500).json({
       success: false,

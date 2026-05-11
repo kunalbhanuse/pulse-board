@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import "./Home.css";
+import Navbar from "../components/Navbar";
 
 const Home = () => {
   return (
     <main className="home-page">
+      <Navbar />
       <section className="home-hero">
         <div className="home-hero__content">
           <p className="home-eyebrow">Polling and feedback platform</p>
@@ -17,12 +19,12 @@ const Home = () => {
           </p>
 
           <div className="home-actions">
-            <Link to="/register" className="btn btn-primary">
-              Get started
+            <Link to="/signup" className="btn btn-primary">
+              Sign Up
             </Link>
 
             <Link to="/login" className="btn btn-secondary">
-              Sign in
+              Sign In
             </Link>
           </div>
         </div>
