@@ -149,3 +149,49 @@ export const submitVote = async (req, res) => {
     });
   }
 };
+
+export const result = async (req, res) => {
+  //   finds poll
+  // finds questions
+  // finds votes
+  // counts option selections
+  // calculates percentages
+
+  const { shareId } = req.params;
+  if (!shareId) {
+    throw ApiError.badRequest("Provide shared Id");
+  }
+  const poll = await Poll.findOne({ shareId });
+  if (!poll) {
+    throw ApiError.notFound("Poll Not found");
+  }
+  const questions = await Question.find({ pollId: poll._id });
+  if (questions.length === 0) {
+    throw ApiError.notFound("Questions not found");
+  }
+  console.log("Questions : -", questions);
+  const votes = await Vote.find({ pollId: poll._id });
+
+  // main
+  const results = questions.map((question) => {
+    const optionResults = question.options.map((option) => {
+      const count = votes.filter(
+        (vote) =>
+          vote.questionId.toString() === question._id.toString() &&
+          vote.optionId.toString() === option._id.toString(),
+      ).length;
+
+      return {
+        option: option.text,
+        count,
+      };
+    });
+
+    return {
+      question: question.question,
+      options: optionResults,
+    };
+  });
+
+  return ApiResponce.ok(res, "Result featched succefully", results);
+};
