@@ -6,7 +6,7 @@ import Navbar from "../components/Navbar";
 
 function Login() {
   const navigate = useNavigate();
-  const API_URL = "http://localhost:3000";
+  const API_URL = "https://pulse-board-9f1s.onrender.com";
 
   const [form, setForm] = useState({
     email: "",
@@ -34,7 +34,9 @@ function Login() {
     } catch (error) {
       setStatus({
         type: "error",
-        text: error.response?.data?.error || "Unable to login. Check your credentials and try again.",
+        text:
+          error.response?.data?.error ||
+          "Unable to login. Check your credentials and try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -90,7 +92,11 @@ function Login() {
             <p className={`status-message ${status.type}`}>{status.text}</p>
           )}
 
-          <button className="button button-primary" type="submit" disabled={isSubmitting}>
+          <button
+            className="button button-primary"
+            type="submit"
+            disabled={isSubmitting}
+          >
             {isSubmitting ? "Signing in..." : "Login"}
           </button>
 

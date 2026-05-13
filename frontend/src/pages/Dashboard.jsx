@@ -6,7 +6,8 @@ import axios from "axios";
 const formatDate = (value) => {
   if (!value) return "No expiry";
   const date = new Date(value);
-  if (Number.isNaN(date.getTime()) || date.getFullYear() < 2000) return "Duration set";
+  if (Number.isNaN(date.getTime()) || date.getFullYear() < 2000)
+    return "Duration set";
   return date.toLocaleDateString(undefined, {
     day: "numeric",
     month: "short",
@@ -18,7 +19,7 @@ function Dashboard() {
   const [polls, setPolls] = useState([]);
   const [status, setStatus] = useState({ type: "", text: "" });
   const [copiedId, setCopiedId] = useState("");
-  const API_URL = "http://localhost:3000";
+  const API_URL = "https://pulse-board-9f1s.onrender.com";
   const accessToken = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
@@ -110,7 +111,10 @@ function Dashboard() {
             </p>
           </div>
 
-          <button className="button button-primary" onClick={() => navigate("/createPoll")}>
+          <button
+            className="button button-primary"
+            onClick={() => navigate("/createPoll")}
+          >
             Create New Poll
           </button>
         </section>
@@ -139,7 +143,10 @@ function Dashboard() {
         <section className="dashboard-section">
           <div className="section-header">
             <h2>Your Recent Polls</h2>
-            <button className="button button-secondary" onClick={() => navigate("/createPoll")}>
+            <button
+              className="button button-secondary"
+              onClick={() => navigate("/createPoll")}
+            >
               Create Poll
             </button>
           </div>
@@ -148,11 +155,17 @@ function Dashboard() {
             <div className="empty-state">
               <h3>No polls yet</h3>
               <p>Create your first poll and start collecting votes.</p>
-              <button className="button button-primary" onClick={() => navigate("/createPoll")}>
+              <button
+                className="button button-primary"
+                onClick={() => navigate("/createPoll")}
+              >
                 Create Poll
               </button>
               {!accessToken && (
-                <button className="button button-secondary" onClick={handleLocalLogout}>
+                <button
+                  className="button button-secondary"
+                  onClick={handleLocalLogout}
+                >
                   Login again
                 </button>
               )}

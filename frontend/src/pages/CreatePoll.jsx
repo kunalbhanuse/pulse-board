@@ -12,7 +12,7 @@ const createQuestion = () => ({
 
 function CreatePoll() {
   const navigate = useNavigate();
-  const API_URL = "http://localhost:3000";
+  const API_URL = "https://pulse-board-9f1s.onrender.com";
 
   const [form, setForm] = useState({
     title: "",
@@ -87,10 +87,13 @@ function CreatePoll() {
     setForm((prev) => ({
       ...prev,
       questions: prev.questions.map((question, index) => {
-        if (index !== questionIndex || question.options.length <= 2) return question;
+        if (index !== questionIndex || question.options.length <= 2)
+          return question;
         return {
           ...question,
-          options: question.options.filter((_, position) => position !== optionIndex),
+          options: question.options.filter(
+            (_, position) => position !== optionIndex,
+          ),
         };
       }),
     }));
@@ -149,8 +152,8 @@ function CreatePoll() {
             <p className="poll-eyebrow">New poll</p>
             <h1>Create a polished voting experience.</h1>
             <p>
-              Add a clear title, concise description, and focused questions
-              your audience can answer quickly.
+              Add a clear title, concise description, and focused questions your
+              audience can answer quickly.
             </p>
           </div>
 
@@ -227,13 +230,20 @@ function CreatePoll() {
               <p className="poll-eyebrow">Questions</p>
               <h2>Build your response form</h2>
             </div>
-            <button className="button button-secondary" type="button" onClick={addQuestion}>
+            <button
+              className="button button-secondary"
+              type="button"
+              onClick={addQuestion}
+            >
               Add question
             </button>
           </div>
 
           {form.questions.map((question, questionIndex) => (
-            <article className="question-card" key={`question-${questionIndex}`}>
+            <article
+              className="question-card"
+              key={`question-${questionIndex}`}
+            >
               <div className="question-top">
                 <h3>Question {questionIndex + 1}</h3>
                 {form.questions.length > 1 && (
@@ -263,7 +273,10 @@ function CreatePoll() {
               <div className="options-block">
                 <span>Answer options</span>
                 {question.options.map((option, optionIndex) => (
-                  <div className="option-row" key={`option-${questionIndex}-${optionIndex}`}>
+                  <div
+                    className="option-row"
+                    key={`option-${questionIndex}-${optionIndex}`}
+                  >
                     <input
                       type="text"
                       value={option.text}
@@ -297,7 +310,11 @@ function CreatePoll() {
                   type="checkbox"
                   checked={question.isRequired}
                   onChange={(e) =>
-                    updateQuestion(questionIndex, "isRequired", e.target.checked)
+                    updateQuestion(
+                      questionIndex,
+                      "isRequired",
+                      e.target.checked,
+                    )
                   }
                 />
                 Required question
@@ -310,7 +327,11 @@ function CreatePoll() {
           <p className={`status-message ${status.type}`}>{status.text}</p>
         )}
 
-        <button className="button button-primary submit-btn" type="submit" disabled={isSubmitting}>
+        <button
+          className="button button-primary submit-btn"
+          type="submit"
+          disabled={isSubmitting}
+        >
           {isSubmitting ? "Creating poll..." : "Create poll"}
         </button>
       </form>

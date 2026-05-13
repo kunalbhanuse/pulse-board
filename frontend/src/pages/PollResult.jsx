@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import "./PollResult.css";
 import { socket } from "../socket";
 
-const API_URL = "http://localhost:3000";
+const API_URL = "https://pulse-board-9f1s.onrender.com";
 
 const getQuestionTotal = (question) =>
   question.options.reduce((sum, option) => sum + Number(option.count || 0), 0);

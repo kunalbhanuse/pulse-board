@@ -6,7 +6,7 @@ import Navbar from "../components/Navbar";
 
 function Signup() {
   const navigate = useNavigate();
-  const API_URL = "http://localhost:3000";
+  const API_URL = "https://pulse-board-9f1s.onrender.com";
 
   const [form, setForm] = useState({
     name: "",
@@ -31,7 +31,9 @@ function Signup() {
     } catch (error) {
       setStatus({
         type: "error",
-        text: error.response?.data?.error || "Unable to create account. Please try again.",
+        text:
+          error.response?.data?.error ||
+          "Unable to create account. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -100,7 +102,11 @@ function Signup() {
             <p className={`status-message ${status.type}`}>{status.text}</p>
           )}
 
-          <button className="button button-primary" type="submit" disabled={isSubmitting}>
+          <button
+            className="button button-primary"
+            type="submit"
+            disabled={isSubmitting}
+          >
             {isSubmitting ? "Creating account..." : "Create account"}
           </button>
 

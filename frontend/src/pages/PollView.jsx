@@ -6,7 +6,7 @@ import "./PollView.css";
 
 function PollView() {
   const { shareId } = useParams();
-  const API_URL = "http://localhost:3000";
+  const API_URL = "https://pulse-board-9f1s.onrender.com";
   const [pollData, setPollData] = useState(null);
   const [answers, setAnswers] = useState({});
   const [status, setStatus] = useState({ type: "", text: "" });
@@ -17,7 +17,9 @@ function PollView() {
   useEffect(() => {
     const fetchPoll = async () => {
       try {
-        const response = await axios.get(`${API_URL}/api/poll/shareId/${shareId}`);
+        const response = await axios.get(
+          `${API_URL}/api/poll/shareId/${shareId}`,
+        );
         setPollData(response.data.data);
       } catch (error) {
         setStatus({
@@ -131,7 +133,9 @@ function PollView() {
                 <span>
                   {answeredCount} of {questions.length} answered
                 </span>
-                <span>{poll.requiresAuth ? "Login requested" : "Public poll"}</span>
+                <span>
+                  {poll.requiresAuth ? "Login requested" : "Public poll"}
+                </span>
               </div>
             </div>
 
