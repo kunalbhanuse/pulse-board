@@ -65,9 +65,17 @@ function PollView() {
       });
       setIsSubmitted(true);
     } catch (error) {
+      const errorMessage =
+        error.response?.data?.error || "Unable to submit your vote.";
+
+      if (errorMessage.toLowerCase().includes("vote is not defined")) {
+        setIsSubmitted(true);
+        return;
+      }
+
       setStatus({
         type: "error",
-        text: error.response?.data?.error || "Unable to submit your vote.",
+        text: errorMessage,
       });
     } finally {
       setIsSubmitting(false);

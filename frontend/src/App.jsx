@@ -5,6 +5,7 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import CreatePoll from "./pages/CreatePoll";
 import PollView from "./pages/PollView";
+import PollResult from "./pages/PollResult";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/createPoll" element={<CreatePoll />} />
         <Route path="/poll/:shareId" element={<PollView />} />
+        <Route path="/poll/:shareId/results" element={<PollResult />} />
       </Routes>
     </BrowserRouter>
   );

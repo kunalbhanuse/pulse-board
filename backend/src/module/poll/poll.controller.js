@@ -6,6 +6,7 @@ import User from "../auth/auth.model.js";
 import Question from "./question.model.js";
 import { pollSchema } from "./dto/poll.dto.js";
 import Vote from "./vote.model.js";
+import { io } from "../../../server.js";
 
 export const createPoll = async (req, res) => {
   try {
@@ -138,6 +139,8 @@ export const submitVote = async (req, res) => {
         questionId,
         optionId,
       });
+
+      io.emit("poll-updated");
       console.log("Vote", vote);
     }
 

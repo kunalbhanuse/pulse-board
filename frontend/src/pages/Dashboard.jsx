@@ -181,6 +181,12 @@ function Dashboard() {
                       Open
                     </button>
                     <button
+                      className="button button-secondary"
+                      onClick={() => navigate(`/poll/${poll.shareId}/results`)}
+                    >
+                      Results
+                    </button>
+                    <button
                       className="button button-primary"
                       onClick={() => handleCopy(poll.shareId)}
                     >
