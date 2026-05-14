@@ -58,12 +58,13 @@ export const dashboard = async (req, res) => {
       throw ApiError.unauthorized("unauthorized");
     }
 
-    const poll = await Poll.find({ createdBy: userId })
+    const polls = await Poll.find({
+      createdBy: userId,
+      $or: [{ expiresAt: { $gt: new Date() } }, { expiresAt: null }],
+    })
       .sort({ createdAt: -1 })
       .populate("createdBy");
-    if (!poll) {
-      throw ApiError.badRequest("Poll not found");
-    }
+
     return ApiResponce.ok(res, "Dashboard featch succefully ", poll);
   } catch (error) {
     return res.status(error.statusCode || 500).json({
@@ -119,8 +120,8 @@ export const submitVote = async (req, res) => {
     }
     for (let answer of answers) {
       const { questionId, optionId } = answer;
-      console.log("questionId:-", questionId);
-      console.log("optionId:-", optionId);
+      // console.log("questionId:-", questionId);
+      // console.log("optionId:-", optionId);
 
       const question = await Question.findById(questionId);
       if (!question) {
