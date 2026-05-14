@@ -14,7 +14,7 @@ export const questionSchema = z.object({
 export const pollSchema = z.object({
   title: z.string().trim().min(5).max(50),
   description: z.string().trim().min(15).max(200),
-  expiresAt: z.number().min(1).max(30),
+  expiresAt: z.coerce.date().optional().nullable(),
   requiresAuth: z.boolean(),
   questions: z.array(questionSchema).min(1),
 });

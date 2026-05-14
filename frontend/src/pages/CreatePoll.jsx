@@ -121,7 +121,7 @@ function CreatePoll() {
       ...form,
       title: form.title.trim(),
       description: form.description.trim(),
-      expiresAt: expiryDate,
+      expiresAt: expiryDate ? expiryDate.toISOString() : null,
       questions: form.questions.map((question) => ({
         question: question.question.trim(),
         options: question.options

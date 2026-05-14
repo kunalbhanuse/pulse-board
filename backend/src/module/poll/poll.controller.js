@@ -25,7 +25,7 @@ export const createPoll = async (req, res) => {
       description,
       createdBy: user._id,
       shareId,
-      expiresAt,
+      expiresAt: expiresAt || null,
       requiresAuth,
     });
 
