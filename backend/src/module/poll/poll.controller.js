@@ -65,7 +65,7 @@ export const dashboard = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate("createdBy");
 
-    return ApiResponce.ok(res, "Dashboard featch succefully ", poll);
+    return ApiResponce.ok(res, "Dashboard featch succefully ", polls);
   } catch (error) {
     return res.status(error.statusCode || 500).json({
       success: false,
