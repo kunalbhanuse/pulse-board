@@ -104,6 +104,13 @@ function CreatePoll() {
     setStatus({ type: "", text: "" });
     setIsSubmitting(true);
 
+    const days = parseInt(form.expiresAt, 10);
+
+    const expiryDate =
+      Number.isFinite(days) && days > 0
+        ? new Date(Date.now() + days * 24 * 60 * 60 * 1000)
+        : null;
+
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
       navigate("/login");
@@ -114,7 +121,7 @@ function CreatePoll() {
       ...form,
       title: form.title.trim(),
       description: form.description.trim(),
-      expiresAt: Number(form.expiresAt),
+      expiresAt: expiryDate,
       questions: form.questions.map((question) => ({
         question: question.question.trim(),
         options: question.options

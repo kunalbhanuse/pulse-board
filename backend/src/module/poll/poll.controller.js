@@ -51,8 +51,8 @@ export const createPoll = async (req, res) => {
 };
 
 export const dashboard = async (req, res) => {
-  console.log("USER:", req.user);
-  console.log("HEADERS:", req.headers.authorization);
+  // console.log("USER:", req.user);
+  // console.log("HEADERS:", req.headers.authorization);
   try {
     const userId = req.user?._id;
 
