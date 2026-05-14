@@ -81,7 +81,10 @@ export const getPollByShareId = async (req, res) => {
       throw ApiError.badRequest("Give a valid shared Id");
     }
 
-    const poll = await Poll.findOne({ shareId });
+    const poll = await Poll.findOne({
+      shareId,
+      expiresAt: { $gt: new Date() },
+    });
     if (!poll) {
       throw ApiError.notFound("Poll not found");
     }
@@ -109,11 +112,10 @@ export const submitVote = async (req, res) => {
     if (!poll) {
       throw ApiError.notFound("Poll not found");
     }
-    //  if(poll.requiresAuth){
-    //   if(!req.user){
-    //     throw ApiError.unauthorized("u are not authorized to vote ")
-    //   }
-    //  }
+    // Auth
+    if (poll.requiresAuth && !req.user) {
+      throw ApiError.unauthorized("Login required to vote on this poll");
+    }
     const { answers } = req.body;
     if (!answers || answers.length === 0) {
       throw ApiError.badRequest("Question and answers are missing ");
