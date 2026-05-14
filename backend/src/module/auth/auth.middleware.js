@@ -31,3 +31,22 @@ export const authMiddleware = async (req, res, next) => {
     return next(ApiError.unauthorized("Invalid or expired token"));
   }
 };
+
+export const optionalAuth = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader?.startsWith("Bearer ")) {
+      return next();
+    }
+
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    req.user = await User.findById(decoded._id).select("-password");
+
+    return next();
+  } catch (error) {
+    return next();
+  }
+};

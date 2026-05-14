@@ -59,12 +59,24 @@ function PollView() {
     setIsSubmitting(true);
 
     try {
-      await axios.post(`${API_URL}/api/poll/shareId/${shareId}/vote`, {
-        answers: Object.entries(answers).map(([questionId, optionId]) => ({
-          questionId,
-          optionId,
-        })),
-      });
+      const accessToken = localStorage.getItem("accessToken");
+
+      await axios.post(
+        `${API_URL}/api/poll/shareId/${shareId}/vote`,
+        {
+          answers: Object.entries(answers).map(([questionId, optionId]) => ({
+            questionId,
+            optionId,
+          })),
+        },
+        {
+          headers: accessToken
+            ? {
+                Authorization: `Bearer ${accessToken}`,
+              }
+            : {},
+        },
+      );
       setIsSubmitted(true);
     } catch (error) {
       const errorMessage =
@@ -113,12 +125,9 @@ function PollView() {
           <div className="vote-card vote-success">
             <p className="vote-eyebrow">Submitted</p>
             <h1>Thanks for sharing your response.</h1>
-            <p>
-              Your vote has been recorded. You can close this page or return to
-              PulseBoard.
-            </p>
-            <Link to="/" className="button button-primary">
-              Back home
+            <p>Your vote has been recorded. You can view the results</p>
+            <Link to="/poll/:shareId/results" className="button button-primary">
+              result
             </Link>
           </div>
         )}
