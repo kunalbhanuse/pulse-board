@@ -60,7 +60,7 @@ function PollView() {
 
     try {
       const accessToken = localStorage.getItem("accessToken");
-
+      console.log("TOKEN EXISTS:", accessToken);
       await axios.post(
         `${API_URL}/api/poll/shareId/${shareId}/vote`,
         {
