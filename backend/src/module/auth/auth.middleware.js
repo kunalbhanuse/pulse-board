@@ -43,7 +43,7 @@ export const optionalAuth = async (req, res, next) => {
     const token = authHeader.split(" ")[1];
     const decoded = verifyAccessToken(token);
 
-    const user = await User.findById(decoded._id).select("-password");
+    const user = await User.findById(decoded.id).select("-password");
     console.log("optional user:-", user);
     req.user = user;
     return next();
