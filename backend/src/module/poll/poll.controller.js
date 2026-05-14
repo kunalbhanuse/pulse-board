@@ -82,10 +82,16 @@ export const getPollByShareId = async (req, res) => {
       throw ApiError.badRequest("Give a valid shared Id");
     }
 
+    // const poll = await Poll.findOne({
+    //   shareId,
+    //   expiresAt: { $gt: new Date() },
+    // });
+
     const poll = await Poll.findOne({
       shareId,
-      expiresAt: { $gt: new Date() },
+      $or: [{ expiresAt: null }, { expiresAt: { $gt: new Date() } }],
     });
+
     if (!poll) {
       throw ApiError.notFound("Poll not found");
     }
