@@ -62,7 +62,6 @@ export const dashboard = async (req, res) => {
 
     const polls = await Poll.find({
       createdBy: userId,
-      $or: [{ expiresAt: { $gt: new Date() } }, { expiresAt: null }],
     })
       .sort({ createdAt: -1 })
       .populate("createdBy");
