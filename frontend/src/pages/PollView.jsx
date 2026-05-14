@@ -126,8 +126,11 @@ function PollView() {
             <p className="vote-eyebrow">Submitted</p>
             <h1>Thanks for sharing your response.</h1>
             <p>Your vote has been recorded. You can view the results</p>
-            <Link to="/poll/:shareId/results" className="button button-primary">
-              result
+            <Link
+              to={`/poll/${shareId}/results`}
+              className="button button-primary"
+            >
+              Result
             </Link>
           </div>
         )}
